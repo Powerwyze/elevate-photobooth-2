@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Claim your photo · Elevate Women's Conference 2026</title>
+<meta name="description" content="Enter your details and download your Elevate Women's Conference 2026 souvenir photo." />
+<meta name="theme-color" content="#fdf6ec" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet" />
+
+<link rel="stylesheet" href="./style.css" />
+<style>
+  /* ============ Claim page (mobile-first) ============ */
+  body.claim-page {
+    background:
+      radial-gradient(140% 80% at 100% 0%, rgba(243, 200, 74, 0.18) 0%, transparent 55%),
+      radial-gradient(140% 80% at 0% 100%, rgba(77, 141, 181, 0.12) 0%, transparent 55%),
+      var(--cream);
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1.25rem 1rem 2rem;
+  }
+
+  .claim-shell {
+    width: 100%;
+    max-width: 460px;
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+  }
+
+  .claim-mast {
+    text-align: center;
+    padding-top: 0.4rem;
+  }
+  .claim-mast__eyebrow {
+    font-family: var(--mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--gold-deep);
+    margin: 0 0 0.4rem;
+    font-weight: 600;
+  }
+  .claim-mast__title {
+    font-family: var(--display);
+    font-size: 2rem;
+    line-height: 1.05;
+    font-weight: 500;
+    color: var(--teal-deep);
+    margin: 0;
+    letter-spacing: -0.01em;
+  }
+  .claim-mast__sub {
+    font-size: 0.92rem;
+    line-height: 1.5;
+    color: var(--ink-soft);
+    margin: 0.55rem auto 0;
+    max-width: 360px;
+  }
+
+  .claim-photo {
+    background: var(--paper);
+    border: 1px solid var(--line-teal);
+    border-radius: var(--radius);
+    padding: 0.6rem;
+    box-shadow: var(--shadow-soft);
+  }
+  .claim-photo__img {
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    object-fit: cover;
+    border-radius: 10px;
+    background: var(--cream-soft);
+    display: block;
+  }
+  .claim-photo__skel {
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    border-radius: 10px;
+    background: linear-gradient(110deg, var(--cream-soft) 8%, rgba(243, 200, 74, 0.18) 18%, var(--cream-soft) 33%);
+    background-size: 220% 100%;
+    animation: skel 1.4s ease-in-out infinite;
+  }
+  @keyframes skel {
+    0% { background-position: 220% 0; }
+    100% { background-position: -20% 0; }
+  }
+
+  .claim-form {
+    background: var(--paper);
+    border: 1px solid var(--line-teal);
+    border-radius: var(--radius);
+    padding: 1.1rem 1rem 1.2rem;
+    box-shadow: var(--shadow-soft);
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+  .claim-form__row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  .claim-form__label {
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    font-weight: 600;
+  }
+  .claim-form__input {
+    font-family: var(--body);
+    font-size: 1rem;
+    line-height: 1.3;
+    padding: 0.78rem 0.85rem;
+    border: 1px solid var(--line-strong);
+    border-radius: 10px;
+    background: var(--cream);
+    color: var(--ink);
+    width: 100%;
+    -webkit-appearance: none;
+    appearance: none;
+    transition: border-color 0.18s ease, box-shadow 0.18s ease;
+  }
+  .claim-form__input:focus {
+    outline: none;
+    border-color: var(--teal);
+    box-shadow: 0 0 0 3px rgba(74, 110, 118, 0.18);
+  }
+  .claim-form__row--split {
+    flex-direction: row;
+    gap: 0.6rem;
+  }
+  .claim-form__row--split > .claim-form__col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    min-width: 0;
+  }
+
+  .claim-form__btn {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-weight: 700;
+    padding: 0.95rem 1rem;
+    border-radius: 12px;
+    border: 0;
+    background: linear-gradient(135deg, var(--teal-deep) 0%, var(--teal) 100%);
+    color: var(--cream);
+    cursor: pointer;
+    width: 100%;
+    margin-top: 0.2rem;
+    transition: transform 0.12s ease, box-shadow 0.18s ease, opacity 0.18s ease;
+    box-shadow: 0 6px 18px rgba(47, 81, 89, 0.25);
+  }
+  .claim-form__btn:hover { transform: translateY(-1px); box-shadow: 0 10px 24px rgba(47, 81, 89, 0.28); }
+  .claim-form__btn:active { transform: translateY(0); }
+  .claim-form__btn:disabled { opacity: 0.6; cursor: progress; transform: none; }
+
+  .claim-form__legal {
+    font-size: 0.72rem;
+    line-height: 1.5;
+    color: var(--ink-dim);
+    margin: 0.2rem 0 0;
+    text-align: center;
+  }
+  .claim-form__legal a {
+    color: var(--teal-deep);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .claim-form__err {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: #b04a3c;
+    background: rgba(176, 74, 60, 0.08);
+    border-left: 3px solid #b04a3c;
+    padding: 0.55rem 0.7rem;
+    border-radius: 4px;
+    margin: 0;
+  }
+  .claim-form__err[hidden] { display: none; }
+
+  .claim-success {
+    text-align: center;
+    padding: 1.3rem 1rem 1.6rem;
+    background: var(--paper);
+    border: 1px solid var(--line-teal);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-soft);
+  }
+  .claim-success__icon {
+    font-size: 2.2rem;
+    line-height: 1;
+    margin-bottom: 0.4rem;
+  }
+  .claim-success__title {
+    font-family: var(--display);
+    font-size: 1.6rem;
+    font-weight: 500;
+    color: var(--teal-deep);
+    margin: 0 0 0.4rem;
+  }
+  .claim-success__copy {
+    font-size: 0.92rem;
+    line-height: 1.5;
+    color: var(--ink-soft);
+    margin: 0 0 1rem;
+  }
+  .claim-success__btn {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-weight: 700;
+    padding: 0.85rem 1.4rem;
+    border-radius: 999px;
+    background: var(--gold);
+    color: var(--ink);
+    text-decoration: none;
+    box-shadow: 0 6px 18px rgba(212, 162, 74, 0.30);
+  }
+
+  .claim-foot {
+    text-align: center;
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--ink-dim);
+    padding: 0.4rem 0 0.2rem;
+  }
+  .claim-foot a {
+    color: var(--ink-dim);
+    text-decoration: none;
+    border-bottom: 1px dashed var(--ink-faint);
+  }
+
+  .claim-error {
+    text-align: center;
+    padding: 2rem 1rem;
+    background: var(--paper);
+    border: 1px solid rgba(176, 74, 60, 0.25);
+    border-radius: var(--radius);
+  }
+  .claim-error__title {
+    font-family: var(--display);
+    font-size: 1.4rem;
+    color: var(--teal-deep);
+    margin: 0 0 0.4rem;
+  }
+  .claim-error__copy {
+    font-size: 0.88rem;
+    color: var(--ink-soft);
+    margin: 0;
+  }
+</style>
+</head>
+<body class="claim-page">
+  <main class="claim-shell" id="claimShell">
+    <header class="claim-mast">
+      <p class="claim-mast__eyebrow">Elevate · Capri 2026</p>
+      <h1 class="claim-mast__title">Your souvenir is ready</h1>
+      <p class="claim-mast__sub">Pop in your name and number, then tap download — we'll send the portrait straight to your phone.</p>
+    </header>
+
+    <div class="claim-photo" id="photoCard">
+      <div class="claim-photo__skel" id="photoSkel"></div>
+      <img class="claim-photo__img" id="photoImg" alt="Your Capri caricature" hidden />
+    </div>
+
+    <form class="claim-form" id="claimForm" autocomplete="on" novalidate>
+      <div class="claim-form__row claim-form__row--split">
+        <div class="claim-form__col">
+          <label class="claim-form__label" for="firstName">First Name</label>
+          <input class="claim-form__input" id="firstName" name="firstName" type="text" autocomplete="given-name" placeholder="Maya" required />
+        </div>
+        <div class="claim-form__col">
+          <label class="claim-form__label" for="lastName">Last Name</label>
+          <input class="claim-form__input" id="lastName" name="lastName" type="text" autocomplete="family-name" placeholder="Romano" required />
+        </div>
+      </div>
+
+      <div class="claim-form__row">
+        <label class="claim-form__label" for="phone">Phone Number</label>
+        <input class="claim-form__input" id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="(555) 123-4567" required />
+      </div>
+
+      <p class="claim-form__err" id="claimErr" hidden></p>
+
+      <button class="claim-form__btn" id="submitBtn" type="submit">⬇ Download my photo</button>
+
+      <p class="claim-form__legal">
+        By tapping Download you agree to our <a href="./terms" target="_blank" rel="noopener">Terms</a> and <a href="./privacy" target="_blank" rel="noopener">Privacy Policy</a>.
+      </p>
+    </form>
+
+    <footer class="claim-foot">
+      © Elevate Women's Conference 2026 · <a href="./">elevate-photobooth</a>
+    </footer>
+  </main>
+
+  <!-- Success state (initially hidden, swapped in after submission) -->
+  <template id="successTpl">
+    <main class="claim-shell">
+      <header class="claim-mast">
+        <p class="claim-mast__eyebrow">All done</p>
+        <h1 class="claim-mast__title">Enjoy Capri ✨</h1>
+        <p class="claim-mast__sub">Your photo is downloading. Check your Photos app — and share it with #ElevateCapri2026.</p>
+      </header>
+      <div class="claim-photo">
+        <img class="claim-photo__img" id="successImg" alt="Your Capri caricature" />
+      </div>
+      <div class="claim-success">
+        <div class="claim-success__icon">🍋</div>
+        <h2 class="claim-success__title">Designed for More</h2>
+        <p class="claim-success__copy">Tap below if your download didn't start automatically.</p>
+        <a class="claim-success__btn" id="successBtn" download="elevate-capri.jpg" href="#">Download again</a>
+      </div>
+      <footer class="claim-foot">© Elevate Women's Conference 2026</footer>
+    </main>
+  </template>
+
+  <!-- Not-found / error state template -->
+  <template id="errorTpl">
+    <main class="claim-shell">
+      <header class="claim-mast">
+        <p class="claim-mast__eyebrow">Something's off</p>
+        <h1 class="claim-mast__title">We can't find this photo</h1>
+      </header>
+      <div class="claim-error">
+        <h2 class="claim-error__title">This link looks expired or invalid.</h2>
+        <p class="claim-error__copy">Head back to the booth and snap a new portrait — we'll generate a fresh QR code for you.</p>
+      </div>
+    </main>
+  </template>
+
+  <script type="module">
+    import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.45.4';
+
+    const SUPABASE_URL = 'https://iabkupefwyvqjnflfcxl.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlhYmt1cGVmd3l2cWpuZmxmY3hsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc0MjcxMTIsImV4cCI6MjA5MzAwMzExMn0.keOpRjTFZ89x6tKwk5HqMpbT_8lAgna_aAh3HeabrJQ';
+    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    const params = new URLSearchParams(window.location.search);
+    const photoId = (params.get('id') || '').trim();
+
+    const photoImg = document.getElementById('photoImg');
+    const photoSkel = document.getElementById('photoSkel');
+    const form = document.getElementById('claimForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const errEl = document.getElementById('claimErr');
+    const phoneInput = document.getElementById('phone');
+
+    let photoUrl = null;
+
+    function showError(msg) {
+      errEl.textContent = msg;
+      errEl.hidden = !msg;
+    }
+
+    function renderNotFound() {
+      const tpl = document.getElementById('errorTpl');
+      const node = tpl.content.cloneNode(true);
+      const shell = document.getElementById('claimShell');
+      shell.replaceWith(node);
+    }
+
+    async function loadPhoto() {
+      if (!photoId) {
+        renderNotFound();
+        return;
+      }
+      const { data, error } = await supabase
+        .from('elevate_photos')
+        .select('id, public_url')
+        .eq('id', photoId)
+        .maybeSingle();
+
+      if (error || !data) {
+        console.error('photo lookup failed', error);
+        renderNotFound();
+        return;
+      }
+
+      photoUrl = data.public_url;
+      photoImg.src = photoUrl;
+      photoImg.onload = () => {
+        photoSkel.style.display = 'none';
+        photoImg.hidden = false;
+      };
+      photoImg.onerror = () => {
+        photoSkel.style.display = 'none';
+        photoImg.hidden = false;
+      };
+    }
+
+    // Phone formatting on the fly (US-style)
+    phoneInput.addEventListener('input', (e) => {
+      const digits = e.target.value.replace(/\D/g, '').slice(0, 11);
+      let out = digits;
+      if (digits.length >= 7) {
+        const d = digits.length === 11 && digits[0] === '1' ? digits.slice(1) : digits.slice(0, 10);
+        out = `(${d.slice(0, 3)}) ${d.slice(3, 6)}-${d.slice(6, 10)}`;
+      } else if (digits.length >= 4) {
+        out = `(${digits.slice(0, 3)}) ${digits.slice(3)}`;
+      } else if (digits.length > 0) {
+        out = `(${digits}`;
+      }
+      e.target.value = out;
+    });
+
+    function validate() {
+      const first = document.getElementById('firstName').value.trim();
+      const last = document.getElementById('lastName').value.trim();
+      const phoneRaw = phoneInput.value.trim();
+      const digits = phoneRaw.replace(/\D/g, '');
+      if (!first) return 'Please enter your first name.';
+      if (!last) return 'Please enter your last name.';
+      if (digits.length < 10) return 'Please enter a valid 10-digit phone number.';
+      return null;
+    }
+
+    async function downloadImage(url, filename) {
+      // Try fetch + blob (better mobile experience). If it fails (CORS), fallback to <a download>.
+      try {
+        const res = await fetch(url, { mode: 'cors' });
+        if (!res.ok) throw new Error('fetch failed');
+        const blob = await res.blob();
+        const objectUrl = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = objectUrl;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        setTimeout(() => URL.revokeObjectURL(objectUrl), 1500);
+        return true;
+      } catch (e) {
+        console.warn('blob download failed, falling back', e);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        a.target = '_blank';
+        a.rel = 'noopener';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        return false;
+      }
+    }
+
+    function renderSuccess(firstName) {
+      const tpl = document.getElementById('successTpl');
+      const node = tpl.content.cloneNode(true);
+      const shell = document.getElementById('claimShell');
+      shell.replaceWith(node);
+      const img = document.getElementById('successImg');
+      const btn = document.getElementById('successBtn');
+      if (img && photoUrl) img.src = photoUrl;
+      if (btn && photoUrl) {
+        btn.href = photoUrl;
+        const safe = (firstName || 'guest').toLowerCase().replace(/[^a-z0-9]+/g, '-');
+        btn.download = `elevate-capri-${safe}.jpg`;
+      }
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      showError('');
+      const err = validate();
+      if (err) { showError(err); return; }
+      if (!photoUrl) { showError('Photo still loading. Try again in a moment.'); return; }
+
+      const firstName = document.getElementById('firstName').value.trim();
+      const lastName = document.getElementById('lastName').value.trim();
+      const phoneRaw = phoneInput.value.trim();
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Saving…';
+
+      try {
+        const { error: insertErr } = await supabase
+          .from('elevate_claims')
+          .insert({
+            photo_id: photoId,
+            first_name: firstName,
+            last_name: lastName,
+            phone: phoneRaw,
+            downloaded_at: new Date().toISOString(),
+          });
+        if (insertErr) {
+          console.error('claim insert failed', insertErr);
+          showError(`Could not save your details: ${insertErr.message || insertErr}`);
+          submitBtn.disabled = false;
+          submitBtn.textContent = '⬇ Download my photo';
+          return;
+        }
+
+        // Trigger download
+        const safe = firstName.toLowerCase().replace(/[^a-z0-9]+/g, '-') || 'guest';
+        await downloadImage(photoUrl, `elevate-capri-${safe}.jpg`);
+
+        renderSuccess(firstName);
+      } catch (e) {
+        console.error(e);
+        showError(`Something went wrong: ${e.message || e}`);
+        submitBtn.disabled = false;
+        submitBtn.textContent = '⬇ Download my photo';
+      }
+    });
+
+    loadPhoto();
+  </script>
+</body>
+</html>

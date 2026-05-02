@@ -1,0 +1,340 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+<meta name="theme-color" content="#fdf6ec" />
+<title>Elevate · Photo Booth</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🍋%3C/text%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@400;500;600;700&family=Cormorant:ital,wght@1,500;1,600&family=Dancing+Script:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="./style.css" />
+</head>
+<body class="kiosk-portrait">
+
+<!-- Background layers -->
+<div class="bg" aria-hidden="true"></div>
+<video class="bg__video" aria-hidden="true" autoplay muted loop playsinline preload="auto"
+       poster="./assets/capri-bg-poster.jpg">
+  <source src="./assets/capri-bg.webm" type="video/webm">
+  <source src="./assets/capri-bg.mp4" type="video/mp4">
+</video>
+<div class="bg__image" aria-hidden="true"></div>
+<div class="bg__grad" aria-hidden="true"></div>
+<div class="bg__grain" aria-hidden="true"></div>
+
+<!-- Topbar -->
+<header class="topbar topbar--solo">
+  <span class="topbar__brand">
+    <span class="topbar__mark" aria-hidden="true">
+      <svg viewBox="0 0 32 32" width="20" height="20">
+        <path d="M6 22 L13 10 L16 14 L19 10 L26 22" stroke="currentColor" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M14.2 13.2 C14.2 11.8, 15 11, 16 11 C17 11, 17.8 11.8, 17.8 13.2 C17.8 15, 16 16.4, 16 16.4 C16 16.4, 14.2 15, 14.2 13.2 Z" fill="currentColor"/>
+      </svg>
+    </span>
+    <span class="topbar__brand-text">
+      <span class="topbar__brand-line1">ELEVATE</span>
+      <span class="topbar__brand-line2">PHOTO BOOTH</span>
+    </span>
+  </span>
+</header>
+
+<!-- Panels -->
+<main class="panels" id="panels">
+
+  <!-- ============== PHOTO BOOTH ============== -->
+  <section class="panel is-active" data-panel="booth">
+    <p class="eyebrow">ELEVATE AI</p>
+    <h1 class="h1">Step into Capri</h1>
+    <p class="lede">Snap a portrait — solo or with friends. We'll paint your crew cruising through Capri in a vintage convertible, then scan the QR to send it straight to your phone.</p>
+
+    <div class="booth__cam-wrap" id="camWrap">
+      <video id="cam" playsinline muted autoplay></video>
+      <img id="snap" alt="Captured photo" />
+      <canvas id="cap" hidden></canvas>
+
+      <div class="booth__hud">
+        <span class="booth__hud-rec"><span class="booth__hud-dot"></span>LIVE · HD</span>
+        <span class="booth__hud-tag">CAPRI · ITALY</span>
+      </div>
+      <div class="booth__corners" aria-hidden="true">
+        <span></span><span></span><span></span><span></span>
+      </div>
+
+      <div class="booth__countdown" id="countdown" hidden></div>
+      <div class="booth__flash" id="flash"></div>
+    </div>
+
+    <div class="booth__row">
+      <button class="btn btn--ghost" id="btnStart">START CAMERA</button>
+      <button class="btn btn--ghost" id="btnSwitch">SWITCH</button>
+    </div>
+    <button class="btn btn--primary btn--block" id="btnTake">📸 Take Photo</button>
+
+    <div class="booth__row" id="afterCaptureRow" hidden>
+      <button class="btn btn--ghost" id="btnRetake">↺ Retake</button>
+      <button class="btn btn--accent" id="btnGenerate">✨ Paint My Capri Scene</button>
+    </div>
+
+    <div class="booth__loading" id="loading" hidden>
+      <div class="booth__loading-art" aria-hidden="true">
+        <span class="lemon-1">🍋</span>
+        <span class="lemon-2">🍋</span>
+        <span class="lemon-3">🍋</span>
+      </div>
+      <div class="booth__loading-overlay">
+        <div class="booth__spinner"></div>
+        <p class="booth__loading-title" id="loadingTitle">Painting your Capri scene…</p>
+        <p class="booth__loading-sub">When life gives you lemons, we paint you a postcard. About 45 seconds.</p>
+      </div>
+    </div>
+
+    <div class="booth__result" id="result" hidden>
+      <img id="resultImg" alt="Your Capri caricature" />
+
+      <div class="qr-card" id="qrCard">
+        <div class="qr-card__art" aria-hidden="true">🍋</div>
+        <div class="qr-card__body">
+          <p class="qr-card__eyebrow">SCAN TO KEEP</p>
+          <h3 class="qr-card__title">Your souvenir is ready</h3>
+          <p class="qr-card__copy">Open your phone camera and point it at the code. Enter your name + number and the portrait downloads straight to your phone.</p>
+        </div>
+        <div class="qr-card__code" id="qrCode" aria-label="QR code to claim your photo"></div>
+      </div>
+
+      <p class="booth__status" id="status"></p>
+      <button class="btn btn--ghost btn--block" id="btnNewGuest">↺ Done — Next guest</button>
+    </div>
+
+    <p class="booth__err" id="err" hidden></p>
+
+    <section class="booth__how">
+      <h3 class="how__title">HOW IT WORKS</h3>
+      <ol class="how__list">
+        <li><strong>Tap Take Photo</strong> · 5-second countdown.</li>
+        <li><strong>We paint your portrait</strong> · AI puts you in a vintage convertible in Capri.</li>
+        <li><strong>Scan the QR code</strong> with your phone camera.</li>
+        <li><strong>Enter your name + number</strong> on your phone to download the souvenir.</li>
+      </ol>
+    </section>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-legal">
+    <button type="button" class="legal-link" data-legal="terms">Terms &amp; Conditions</button>
+    <span class="sep">·</span>
+    <button type="button" class="legal-link" data-legal="privacy">Privacy Policy</button>
+  </div>
+</footer>
+
+<!-- ============== LEGAL OVERLAY ============== -->
+<div class="legal-overlay" id="legalOverlay" hidden>
+  <div class="legal-overlay__panel" role="dialog" aria-modal="true" aria-labelledby="legalTitle">
+    <button type="button" class="legal-overlay__close" id="legalClose" aria-label="Close">✕</button>
+    <div class="legal-overlay__scroll">
+      <div class="legal-shell">
+        <div class="eyebrow">Designed for More</div>
+        <h1 id="legalTitle">Terms &amp; Conditions</h1>
+        <div class="meta">Effective May 1, 2026 · Elevate Women's Conference 2026</div>
+
+        <!-- TERMS BODY -->
+        <div class="legal-body" data-body="terms">
+          <h2>1. About this experience</h2>
+          <p>The Elevate Women's Conference Photo Booth (the “Kiosk”) is an on-site interactive
+          experience operated by the Elevate Women's Conference 2026 (“Elevate,” “we,” “us”).
+          The Kiosk lets attendees opt in to capture a photo, receive an AI-generated
+          souvenir portrait themed around Capri, Italy, and have that portrait delivered to
+          their phone or email.</p>
+          <p>By tapping “I agree” at the consent screen and continuing through the Kiosk
+          flow, you accept these Terms and the <button type="button" class="legal-inline" data-legal="privacy">Privacy Policy</button>. If you do not agree, please do not
+          continue past the consent screen.</p>
+
+          <h2>2. What we collect</h2>
+          <p>The Kiosk only collects the minimum information needed to deliver your souvenir:</p>
+          <ul>
+            <li><strong>First name and last name</strong> — used to personalize your message and label your image file.</li>
+            <li><strong>Phone number</strong> — used to text you a link to your image (optional).</li>
+            <li><strong>Email address</strong> — used to email you a link to your image (optional).</li>
+            <li><strong>A still photo of your face</strong> — captured locally on the Kiosk and sent to our AI image partner to render the souvenir portrait.</li>
+          </ul>
+          <p>You may choose to provide phone, email, both, or neither. If you provide
+          neither, you can still scan an on-screen QR code to download your image without
+          giving us contact details.</p>
+
+          <h2>3. How we use it</h2>
+          <ul>
+            <li>To generate your souvenir portrait.</li>
+            <li>To deliver the portrait to you via text message and/or email.</li>
+            <li>To send you a single follow-up message about the conference if you have separately opted in elsewhere.</li>
+          </ul>
+          <p>We do <strong>not</strong> sell your information, share it with advertisers, or
+          use your face data to train AI models.</p>
+
+          <div class="callout callout--gold">
+            <strong>Single message commitment:</strong> By providing your phone number at
+            the Kiosk, you consent to receive one (1) MMS message containing your souvenir
+            image. Reply <strong>STOP</strong> at any time to opt out of any further
+            messages. Reply <strong>HELP</strong> for help. Message and data rates may apply.
+          </div>
+
+          <h2>4. Use of the AI portrait</h2>
+          <p>The souvenir portrait is provided to you for personal, non-commercial use.
+          You're welcome to share it on your personal social media. Elevate may showcase a
+          curated selection of portraits at the conference recap (faces blurred or with
+          separate permission). You retain rights to your underlying likeness.</p>
+
+          <h2>5. Photo retention</h2>
+          <p>The captured photo of your face is sent to our AI partner only for the
+          duration of one render and is not retained by them after generation. The finished
+          souvenir image is stored on our hosting provider for up to <strong>30 days</strong>
+          so the link in your text or email keeps working, then it's automatically deleted.</p>
+
+          <h2>6. Your rights</h2>
+          <p>You can ask us to delete your stored souvenir image, your contact information,
+          or both at any time by emailing <a href="mailto:hello@powerwyze.com">hello@powerwyze.com</a>. We'll honor the request within 30 days.</p>
+
+          <h2>7. Disclaimers</h2>
+          <p>The Kiosk is provided “as is” for entertainment at the conference. We do our
+          best but can't guarantee specific output quality, delivery time, or carrier
+          delivery success. AI-generated images are stylized interpretations and not
+          photographs.</p>
+
+          <h2>8. Changes</h2>
+          <p>If we update these Terms before or during the event, we'll post the new
+          version at this URL with an updated effective date.</p>
+
+          <h2>9. Contact</h2>
+          <p>Questions, concerns, or deletion requests:
+          <a href="mailto:hello@powerwyze.com">hello@powerwyze.com</a></p>
+        </div>
+
+        <!-- PRIVACY BODY -->
+        <div class="legal-body" data-body="privacy" hidden>
+          <p>This Privacy Policy explains what the Elevate Women's Conference 2026 photo
+          booth kiosk (the “Kiosk”) collects, how we use it, and the choices you have.
+          We've kept it short on purpose. If anything is unclear, email
+          <a href="mailto:hello@powerwyze.com">hello@powerwyze.com</a>.</p>
+
+          <div class="callout">
+            <strong>The short version:</strong> The Kiosk only collects what it needs to
+            make and send you your souvenir portrait — your name, optionally your phone or
+            email, and a single photo of your face. We don't sell your data, we don't use
+            your face to train AI, and you can ask us to delete everything at any time.
+          </div>
+
+          <h2>1. The data we collect</h2>
+          <table>
+            <thead>
+              <tr><th>Data</th><th>Required?</th><th>Why we collect it</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>First name &amp; last name</td><td>Required to start</td><td>To personalize your souvenir and address your delivery message.</td></tr>
+              <tr><td>Phone number</td><td>Optional</td><td>To text you a link to your portrait.</td></tr>
+              <tr><td>Email address</td><td>Optional</td><td>To email you a link to your portrait.</td></tr>
+              <tr><td>A photo of your face</td><td>Required</td><td>Sent to our AI partner to generate the stylized portrait.</td></tr>
+            </tbody>
+          </table>
+
+          <h2>2. How consent is captured</h2>
+          <p>Consent is given <strong>in person, at the physical Kiosk</strong>, by tapping
+          “I agree” before entering any contact information. We do not collect data from
+          anyone who does not approach the Kiosk and complete that step. There is no
+          tracking, cookie banner, or background analytics on this site beyond what's
+          strictly needed to render these pages.</p>
+
+          <h2>3. How we use your data</h2>
+          <ul>
+            <li><strong>To generate your portrait.</strong> Your photo is sent over an encrypted connection to our AI image provider (Google Gemini “Nano Banana”) for one rendering pass and is not retained by them after.</li>
+            <li><strong>To deliver your portrait.</strong> If you provide a phone number, we send a single MMS via our SMS provider (currently ClickSend, with Twilio as a backup). If you provide an email, we email it via our email provider.</li>
+            <li><strong>To host your portrait so the link works.</strong> The finished image is stored on Supabase (our hosting provider) for up to 30 days, then automatically deleted.</li>
+          </ul>
+
+          <h2>4. What we do not do</h2>
+          <ul>
+            <li>We do not sell your data.</li>
+            <li>We do not share your data with advertisers or third-party marketers.</li>
+            <li>We do not use your face image to train AI models.</li>
+            <li>We do not text or email you again unless you've separately opted in elsewhere (e.g. signing up for the conference newsletter).</li>
+          </ul>
+
+          <h2>5. Retention</h2>
+          <table>
+            <thead>
+              <tr><th>What</th><th>Where</th><th>How long</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Your captured face photo</td><td>Sent to AI provider, then discarded</td><td>Discarded after rendering (minutes)</td></tr>
+              <tr><td>Your finished souvenir portrait</td><td>Supabase hosting</td><td>Up to 30 days</td></tr>
+              <tr><td>Your name, phone, email</td><td>SMS / email provider message log</td><td>Up to 30 days</td></tr>
+            </tbody>
+          </table>
+
+          <h2>6. SMS-specific terms (US carriers)</h2>
+          <p>By providing your phone number at the Kiosk, you consent to receive a single
+          MMS message containing your souvenir image from Elevate Women's Conference.
+          Message frequency: one per opt-in. Message and data rates may apply. Reply
+          <strong>STOP</strong> at any time to unsubscribe. Reply <strong>HELP</strong>
+          for help.</p>
+
+          <h2>7. Your choices and rights</h2>
+          <ul>
+            <li>Use the QR code on the result screen to save your image without giving us a phone or email.</li>
+            <li>Reply STOP to any of our texts to opt out.</li>
+            <li>Email <a href="mailto:hello@powerwyze.com">hello@powerwyze.com</a> to ask us to delete your photo, contact info, or both.</li>
+          </ul>
+          <p>If you live in California, the EU, or another jurisdiction with specific
+          privacy laws (CCPA, GDPR, etc.), you have additional rights including the right
+          to know what we hold about you and the right to deletion. Email us and we'll
+          honor those requests.</p>
+
+          <h2>8. Service providers we use</h2>
+          <ul>
+            <li><strong>Google Gemini (“Nano Banana”)</strong> — AI image generation</li>
+            <li><strong>Supabase</strong> — image hosting</li>
+            <li><strong>ClickSend / Twilio</strong> — SMS/MMS delivery</li>
+            <li><strong>Vercel / Perplexity</strong> — kiosk web hosting</li>
+          </ul>
+          <p>Each of these providers has its own privacy practices governing data we send them.</p>
+
+          <h2>9. Security</h2>
+          <p>Connections to the Kiosk and to our service providers use HTTPS/TLS. The
+          Kiosk runs on a private device at the conference venue and does not display your
+          data to other guests.</p>
+
+          <h2>10. Children</h2>
+          <p>The Kiosk is intended for adult conference attendees. We do not knowingly
+          collect information from anyone under 13.</p>
+
+          <h2>11. Changes</h2>
+          <p>If this Privacy Policy changes before or during the event, we'll post the
+          updated version at this URL with a new effective date.</p>
+
+          <h2>12. Contact</h2>
+          <p>Privacy questions or deletion requests:
+          <a href="mailto:hello@powerwyze.com">hello@powerwyze.com</a></p>
+        </div>
+
+        <div class="footer-note">
+          © 2026 Elevate Women's Conference. Operated by Powerwyze. All rights reserved.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============== ROTATE OVERLAY ============== -->
+<div class="rotate-warn" id="rotateWarn">
+  <div class="rotate-warn__inner">
+    <div class="rotate-warn__icon">↻</div>
+    <p class="rotate-warn__text">ROTATE TO PORTRAIT</p>
+    <p class="rotate-warn__sub">This experience is portrait-only.</p>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
+<script type="module" src="./app.js"></script>
+</body>
+</html>

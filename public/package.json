@@ -1,0 +1,14 @@
+{
+  "name": "elevate-photobooth",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": "20.x"
+  },
+  "dependencies": {
+    "@google/genai": "^1.51.0",
+    "@supabase/supabase-js": "^2.45.4",
+    "sharp": "^0.33.5"
+  }
+}
