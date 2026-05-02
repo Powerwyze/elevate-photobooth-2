@@ -37,21 +37,66 @@ function clearError() { showError(''); }
 
 async function startCamera() {
   clearError();
+
+  // Pre-flight checks — surface the real reason instead of a silent black screen.
+  if (!window.isSecureContext) {
+    showError('Camera requires HTTPS. Open this page over https:// (or localhost).');
+    return;
+  }
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+    showError('This browser does not expose camera APIs. Try Chrome, Safari, or Edge.');
+    return;
+  }
+
   try {
     if (stream) {
       stream.getTracks().forEach(t => t.stop());
       stream = null;
     }
-    stream = await navigator.mediaDevices.getUserMedia({
-      video: { facingMode, width: { ideal: 1280 }, height: { ideal: 1707 } },
-      audio: false,
-    });
+
+    // Try the requested facing mode first; fall back to ANY camera if that fails.
+    // Some kiosks / desktops only expose a single device with no facingMode label,
+    // and a strict facingMode constraint will reject with OverconstrainedError.
+    try {
+      stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: { ideal: facingMode }, width: { ideal: 1280 }, height: { ideal: 1707 } },
+        audio: false,
+      });
+    } catch (innerErr) {
+      console.warn('[camera] facingMode failed, retrying without constraint:', innerErr);
+      stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+    }
+
     cam.srcObject = stream;
     cam.hidden = false;
     snap.hidden = true;
-    await cam.play();
+
+    // play() can reject on strict autoplay policies even though the element
+    // has muted+playsinline. Treat reject as soft: log + show error, but keep stream.
+    try {
+      await cam.play();
+    } catch (playErr) {
+      console.warn('[camera] play() rejected:', playErr);
+      showError('Tap the camera area to start the preview.');
+      // Tap-to-play fallback for stricter mobile browsers
+      cam.addEventListener('click', () => cam.play().catch(() => {}), { once: true });
+      camWrap.addEventListener('click', () => cam.play().catch(() => {}), { once: true });
+    }
   } catch (e) {
-    showError(`Camera unavailable. Tap Switch then Start Camera. (${e.message || e})`);
+    const name = e && e.name;
+    let msg;
+    if (name === 'NotAllowedError' || name === 'PermissionDeniedError') {
+      msg = 'Camera permission was blocked. Open browser settings, allow camera for this site, then reload.';
+    } else if (name === 'NotFoundError' || name === 'DevicesNotFoundError') {
+      msg = 'No camera detected on this device.';
+    } else if (name === 'NotReadableError' || name === 'TrackStartError') {
+      msg = 'Camera is in use by another app. Close other apps using the camera and tap Start Camera.';
+    } else if (name === 'OverconstrainedError') {
+      msg = 'Camera could not match requested settings. Tap Switch, then Start Camera.';
+    } else {
+      msg = `Camera unavailable: ${e.message || e}. Tap Start Camera to retry.`;
+    }
+    showError(msg);
   }
 }
 
@@ -281,7 +326,9 @@ window.addEventListener('keydown', e => {
   if (e.key === 'F5' || e.key === 'F11') e.preventDefault();
 });
 
-// Auto-start camera
+// Auto-start camera. On strict autoplay-gated browsers this may fail silently;
+// the error handler in startCamera() surfaces guidance, and tapping Start Camera
+// (which is a user gesture) will succeed.
 startCamera();
 
 // ---------- Legal overlay (Terms & Privacy) ----------
